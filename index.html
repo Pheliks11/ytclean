@@ -67,6 +67,7 @@
       align-self: flex-start; margin-bottom: 10px;
       padding-left: 4px; width: 100%; max-width: 360px;
     }
+    .link-card, .cta-primary { -webkit-appearance: none; appearance: none; }
     .cta-primary {
       width: 100%; max-width: 360px;
       padding: 17px; border-radius: var(--radius);
@@ -164,16 +165,16 @@
   </div>
 
   <!-- Hauptbutton: öffnet Safari mit target="_blank" -->
-  <a class="cta-primary" href="https://www.youtube.com/feed/subscriptions" target="_blank" rel="noopener">
+  <button class="cta-primary" onclick="window.location.href='https://www.youtube.com/feed/subscriptions'">
     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
     Abonnements öffnen
-  </a>
+  </button>
 
   <p class="section-label">Schnellzugriff</p>
   <div class="links-grid">
 
 
-    <a class="link-card" href="https://www.youtube.com/feed/history" target="_blank" rel="noopener">
+    <button class="link-card" onclick="window.location.href='https://www.youtube.com/feed/history'">
       <div class="link-icon li-green">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
@@ -181,8 +182,8 @@
         <div class="link-label">Verlauf</div>
         <div class="link-desc">Zuletzt gesehen</div>
       </div>
-    </a>
-    <a class="link-card" href="https://www.youtube.com/feed/library" target="_blank" rel="noopener">
+    </button>
+    <button class="link-card" onclick="window.location.href='https://www.youtube.com/feed/library'">
       <div class="link-icon li-red">
         <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       </div>
@@ -190,7 +191,7 @@
         <div class="link-label">Bibliothek</div>
         <div class="link-desc">Playlists &amp; Später</div>
       </div>
-    </a>
+    </button>
   </div>
 
   <div class="divider"></div>
