@@ -83,14 +83,14 @@
     .cta-primary:active { transform: scale(0.96); }
     .cta-primary svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
     .links-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
+      display: grid; grid-template-columns: 1fr;
       gap: 12px; width: 100%; max-width: 360px;
       margin-bottom: 28px;
     }
     .link-card {
-      display: flex; flex-direction: column;
-      align-items: flex-start; gap: 10px;
-      padding: 18px 16px;
+      display: flex; flex-direction: row;
+      align-items: center; gap: 14px;
+      padding: 14px 16px;
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
@@ -171,24 +171,8 @@
 
   <p class="section-label">Schnellzugriff</p>
   <div class="links-grid">
-    <a class="link-card" href="https://www.youtube.com/feed/subscriptions" target="_blank" rel="noopener">
-      <div class="link-icon li-blue">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-      </div>
-      <div>
-        <div class="link-label">Abonnements</div>
-        <div class="link-desc">Dein Haupt-Feed</div>
-      </div>
-    </a>
-    <a class="link-card" href="https://www.youtube.com/feed/trending" target="_blank" rel="noopener">
-      <div class="link-icon li-yell">
-        <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-      </div>
-      <div>
-        <div class="link-label">Trending</div>
-        <div class="link-desc">Aktuelle Videos</div>
-      </div>
-    </a>
+
+
     <a class="link-card" href="https://www.youtube.com/feed/history" target="_blank" rel="noopener">
       <div class="link-icon li-green">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
