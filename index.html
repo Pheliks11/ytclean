@@ -8,537 +8,224 @@
   <meta name="apple-mobile-web-app-title" content="YTClean">
   <meta name="theme-color" content="#0a0a0a">
   <title>YTClean</title>
-
   <style>
     :root {
-      --bg:          #0a0a0a;
-      --surface:     #141414;
-      --card:        #1a1a1a;
-      --elevated:    #222;
-      --text:        #f5f5f7;
-      --text-2:      #86868b;
-      --text-3:      #48484a;
-      --accent:      #ff3b30;
-      --accent-glow: rgba(255,59,48,0.18);
-      --border:      rgba(255,255,255,0.07);
-      --border-h:    rgba(255,255,255,0.13);
-      --glass:       rgba(255,255,255,0.04);
-      --radius:      18px;
-      --radius-sm:   10px;
-      --ease:        cubic-bezier(0.16, 1, 0.3, 1);
-      --safe-top:    env(safe-area-inset-top);
-      --safe-bottom: env(safe-area-inset-bottom);
+      --bg:       #0a0a0a;
+      --card:     #1a1a1a;
+      --elevated: #222;
+      --text:     #f5f5f7;
+      --text-2:   #86868b;
+      --accent:   #ff3b30;
+      --accent-g: rgba(255,59,48,0.18);
+      --border:   rgba(255,255,255,0.07);
+      --border-h: rgba(255,255,255,0.13);
+      --radius:   18px;
+      --ease:     cubic-bezier(0.16,1,0.3,1);
+      --safe-t:   env(safe-area-inset-top);
+      --safe-b:   env(safe-area-inset-bottom);
     }
-
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     html, body {
-      height: 100%;
+      min-height: 100dvh;
       background: var(--bg);
       color: var(--text);
-      font-family: -apple-system, 'SF Pro Display', 'Plus Jakarta Sans', sans-serif;
+      font-family: -apple-system, 'SF Pro Display', sans-serif;
       -webkit-font-smoothing: antialiased;
-      overscroll-behavior: none;
     }
-
-    /* ── Layout ── */
-    #app {
+    .page {
+      min-height: 100dvh;
       display: flex;
       flex-direction: column;
-      height: 100dvh;
-      height: 100vh;
-    }
-
-    /* ── Top Bar ── */
-    #topbar {
-      display: flex;
+      padding: calc(var(--safe-t) + 48px) 24px calc(var(--safe-b) + 32px);
       align-items: center;
-      justify-content: space-between;
-      padding: calc(var(--safe-top) + 14px) 16px 14px;
-      background: rgba(10,10,10,0.82);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-bottom: 1px solid var(--border);
-      flex-shrink: 0;
-      z-index: 10;
     }
-
-    .topbar-left, .topbar-right {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      min-width: 80px;
-    }
-    .topbar-right { justify-content: flex-end; }
-
-    .topbar-title {
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.02em;
-      color: var(--text);
-      flex: 1;
-      text-align: center;
-    }
-    .topbar-title span {
-      color: var(--accent);
-    }
-
-    .icon-btn {
-      width: 36px;
-      height: 36px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      border: none;
-      background: var(--glass);
-      border-radius: 50%;
-      border: 1px solid var(--border);
-      cursor: pointer;
-      color: var(--text);
-      transition: background 0.2s var(--ease), transform 0.15s var(--ease);
-      -webkit-tap-highlight-color: transparent;
-    }
-    .icon-btn:active { transform: scale(0.88); background: var(--border-h); }
-    .icon-btn svg { width: 16px; height: 16px; stroke: var(--text); fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-
-    /* ── Loading Bar ── */
-    #progress-bar {
-      height: 2px;
-      width: 0%;
-      background: var(--accent);
-      transition: width 0.3s ease, opacity 0.4s ease;
-      flex-shrink: 0;
-      opacity: 0;
-      box-shadow: 0 0 8px var(--accent-glow);
-    }
-    #progress-bar.loading { opacity: 1; }
-
-    /* ── WebView Frame ── */
-    #yt-frame {
-      flex: 1;
-      width: 100%;
-      border: none;
-      background: #fff;
-      display: block;
-    }
-
-    /* ── Bottom Bar ── */
-    #bottombar {
-      display: flex;
-      align-items: center;
-      justify-content: space-around;
-      padding: 10px 8px calc(var(--safe-bottom) + 10px);
-      background: rgba(10,10,10,0.82);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      border-top: 1px solid var(--border);
-      flex-shrink: 0;
-    }
-
-    .bottom-btn {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 4px;
-      border: none;
-      background: none;
-      cursor: pointer;
-      color: var(--text-2);
-      padding: 6px 16px;
-      border-radius: var(--radius-sm);
-      transition: color 0.2s, transform 0.15s var(--ease);
-      -webkit-tap-highlight-color: transparent;
-      min-width: 60px;
-    }
-    .bottom-btn:active { transform: scale(0.88); }
-    .bottom-btn.active { color: var(--accent); }
-    .bottom-btn svg { width: 22px; height: 22px; stroke: currentColor; fill: none; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
-    .bottom-btn span { font-size: 10px; font-weight: 500; letter-spacing: 0.01em; }
-
-    /* ── Splash / Install Screen ── */
-    #splash {
-      position: fixed;
-      inset: 0;
-      background: var(--bg);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      gap: 0;
-      z-index: 100;
-      padding: 32px 24px;
-      padding-top: calc(var(--safe-top) + 32px);
-      padding-bottom: calc(var(--safe-bottom) + 32px);
-    }
-    #splash.hidden { display: none; }
-
-    .splash-icon {
-      width: 96px;
-      height: 96px;
-      border-radius: 24px;
-      background: linear-gradient(145deg, #1a1a1a, #222);
+    .app-icon {
+      width: 100px; height: 100px;
+      border-radius: 26px;
+      background: linear-gradient(145deg, #1c1c1c, #242424);
       border: 1px solid var(--border-h);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-bottom: 28px;
-      box-shadow: 0 8px 40px rgba(255,59,48,0.2);
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 24px;
+      box-shadow: 0 8px 40px rgba(255,59,48,0.22);
     }
-    .splash-icon svg { width: 48px; height: 48px; }
-
-    .splash-title {
-      font-size: clamp(2rem, 8vw, 2.8rem);
+    .app-icon svg { width: 52px; height: 52px; }
+    h1 {
+      font-size: clamp(2.2rem, 9vw, 3rem);
       font-weight: 700;
       letter-spacing: -0.04em;
-      color: var(--text);
       margin-bottom: 10px;
       text-align: center;
     }
-    .splash-title span { color: var(--accent); }
-
-    .splash-sub {
-      font-size: 16px;
-      color: var(--text-2);
-      text-align: center;
-      line-height: 1.55;
-      max-width: 280px;
-      margin-bottom: 40px;
+    h1 span { color: var(--accent); }
+    .subtitle {
+      font-size: 16px; color: var(--text-2);
+      text-align: center; line-height: 1.55;
+      max-width: 290px; margin-bottom: 36px;
     }
-
-    .feature-list {
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
-      width: 100%;
-      max-width: 320px;
-      margin-bottom: 40px;
+    .section-label {
+      font-size: 11px; font-weight: 600;
+      letter-spacing: 0.08em; color: var(--text-2);
+      text-transform: uppercase;
+      align-self: flex-start;
+      margin-bottom: 10px; padding-left: 4px;
+      width: 100%; max-width: 360px;
     }
-    .feature-item {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      padding: 14px 16px;
+    .cta-primary {
+      width: 100%; max-width: 360px;
+      padding: 17px; border-radius: var(--radius);
+      border: none; background: var(--accent);
+      color: #fff; font-size: 17px; font-weight: 600;
+      letter-spacing: -0.01em; cursor: pointer;
+      transition: transform 0.15s var(--ease);
+      box-shadow: 0 4px 28px var(--accent-g);
+      -webkit-tap-highlight-color: transparent;
+      margin-bottom: 16px; text-decoration: none;
+      display: flex; align-items: center;
+      justify-content: center; gap: 8px;
+    }
+    .cta-primary:active { transform: scale(0.96); }
+    .cta-primary svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+    .links-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 12px; width: 100%; max-width: 360px;
+      margin-bottom: 28px;
+    }
+    .link-card {
+      display: flex; flex-direction: column;
+      align-items: flex-start; gap: 10px;
+      padding: 18px 16px;
       background: var(--card);
-      border-radius: var(--radius-sm);
       border: 1px solid var(--border);
-    }
-    .feature-icon {
-      width: 36px;
-      height: 36px;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-    }
-    .feature-icon svg { width: 18px; height: 18px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
-    .fi-red   { background: rgba(255,59,48,0.15); color: #ff3b30; }
-    .fi-blue  { background: rgba(10,132,255,0.15); color: #0a84ff; }
-    .fi-green { background: rgba(52,199,89,0.15);  color: #34c759; }
-
-    .feature-text { flex: 1; }
-    .feature-label { font-size: 14px; font-weight: 600; color: var(--text); }
-    .feature-desc  { font-size: 12px; color: var(--text-2); margin-top: 2px; }
-
-    .cta-btn {
-      width: 100%;
-      max-width: 320px;
-      padding: 16px;
       border-radius: var(--radius);
-      border: none;
-      background: var(--accent);
-      color: #fff;
-      font-size: 17px;
-      font-weight: 600;
-      letter-spacing: -0.01em;
-      cursor: pointer;
-      transition: transform 0.15s var(--ease), box-shadow 0.2s;
-      box-shadow: 0 4px 24px var(--accent-glow);
+      text-decoration: none; color: var(--text);
+      transition: transform 0.15s var(--ease), background 0.2s;
       -webkit-tap-highlight-color: transparent;
     }
-    .cta-btn:active { transform: scale(0.96); }
-
-    /* ── Toast ── */
-    #toast {
-      position: fixed;
-      bottom: calc(var(--safe-bottom) + 80px);
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: var(--elevated);
-      border: 1px solid var(--border-h);
-      border-radius: 100px;
-      padding: 10px 20px;
-      font-size: 14px;
-      font-weight: 500;
-      color: var(--text);
-      white-space: nowrap;
-      opacity: 0;
-      transition: opacity 0.3s var(--ease), transform 0.3s var(--ease);
-      pointer-events: none;
-      z-index: 200;
-      backdrop-filter: blur(10px);
+    .link-card:active { transform: scale(0.95); background: var(--elevated); }
+    .link-icon {
+      width: 40px; height: 40px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
     }
-    #toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
+    .link-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .li-red   { background: rgba(255,59,48,0.15);  color: #ff3b30; }
+    .li-blue  { background: rgba(10,132,255,0.15); color: #0a84ff; }
+    .li-green { background: rgba(52,199,89,0.15);  color: #34c759; }
+    .li-yell  { background: rgba(255,214,10,0.15); color: #ffd60a; }
+    .link-label { font-size: 14px; font-weight: 600; }
+    .link-desc  { font-size: 12px; color: var(--text-2); margin-top: -4px; }
+    .divider { width: 100%; max-width: 360px; height: 1px; background: var(--border); margin: 20px 0; }
+    .info-card {
+      width: 100%; max-width: 360px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 16px; margin-bottom: 12px;
     }
+    .info-card-title {
+      font-size: 13px; font-weight: 600; color: var(--text);
+      margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
+    }
+    .info-card-title svg { width: 14px; height: 14px; stroke: var(--text-2); fill: none; stroke-width: 2; stroke-linecap: round; }
+    .info-card-body { font-size: 13px; color: var(--text-2); line-height: 1.6; }
+    .info-card-body code {
+      font-family: 'SF Mono', monospace; font-size: 11px;
+      background: var(--elevated); padding: 6px 10px;
+      border-radius: 8px; color: #0a84ff;
+      display: block; margin-top: 8px; word-break: break-all;
+    }
+    .badge {
+      font-size: 10px; font-weight: 700;
+      letter-spacing: 0.05em; text-transform: uppercase;
+      background: rgba(255,214,10,0.15); color: #ffd60a;
+      border-radius: 6px; padding: 2px 7px;
+    }
+    .footer { margin-top: 32px; font-size: 12px; color: var(--text-2); text-align: center; opacity: 0.4; }
   </style>
 </head>
 <body>
+<div class="page">
 
-<!-- Splash Screen -->
-<div id="splash">
-  <div class="splash-icon">
-    <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <rect width="48" height="48" rx="12" fill="#ff3b30" opacity="0.15"/>
-      <polygon points="19,14 37,24 19,34" fill="#ff3b30"/>
-      <line x1="10" y1="18" x2="10" y2="30" stroke="#ff3b30" stroke-width="3" stroke-linecap="round"/>
-      <line x1="15" y1="14" x2="15" y2="34" stroke="#ff3b30" stroke-width="3" stroke-linecap="round" opacity="0.5"/>
+  <div class="app-icon">
+    <svg viewBox="0 0 52 52" fill="none">
+      <rect width="52" height="52" rx="14" fill="#ff3b30" opacity="0.12"/>
+      <polygon points="21,15 40,26 21,37" fill="#ff3b30"/>
+      <line x1="12" y1="19" x2="12" y2="33" stroke="#ff3b30" stroke-width="3.5" stroke-linecap="round"/>
+      <line x1="17" y1="15" x2="17" y2="37" stroke="#ff3b30" stroke-width="3.5" stroke-linecap="round" opacity="0.45"/>
     </svg>
   </div>
 
-  <h1 class="splash-title">YT<span>Clean</span></h1>
-  <p class="splash-sub">YouTube wie es sein sollte — ohne Ablenkung, mit Fokus auf deine Abonnements.</p>
+  <h1>YT<span>Clean</span></h1>
+  <p class="subtitle">YouTube direkt zu deinen Abonnements — ohne Shorts, ohne Algorithmus.</p>
 
-  <div class="feature-list">
-    <div class="feature-item">
-      <div class="feature-icon fi-red">
-        <svg viewBox="0 0 24 24"><path d="M18 6L6 18M6 6l12 12"/></svg>
+  <a class="cta-primary" href="https://www.youtube.com/feed/subscriptions">
+    <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Abonnements öffnen
+  </a>
+
+  <p class="section-label">Schnellzugriff</p>
+  <div class="links-grid">
+    <a class="link-card" href="https://www.youtube.com/feed/subscriptions">
+      <div class="link-icon li-blue">
+        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
       </div>
-      <div class="feature-text">
-        <div class="feature-label">Keine Shorts</div>
-        <div class="feature-desc">Shorts-Tab und Kurzvideos ausgeblendet</div>
+      <div>
+        <div class="link-label">Abonnements</div>
+        <div class="link-desc">Dein Haupt-Feed</div>
       </div>
+    </a>
+    <a class="link-card" href="https://www.youtube.com/feed/trending">
+      <div class="link-icon li-yell">
+        <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+      </div>
+      <div>
+        <div class="link-label">Trending</div>
+        <div class="link-desc">Aktuelle Videos</div>
+      </div>
+    </a>
+    <a class="link-card" href="https://www.youtube.com/feed/history">
+      <div class="link-icon li-green">
+        <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+      </div>
+      <div>
+        <div class="link-label">Verlauf</div>
+        <div class="link-desc">Zuletzt gesehen</div>
+      </div>
+    </a>
+    <a class="link-card" href="https://www.youtube.com/feed/library">
+      <div class="link-icon li-red">
+        <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
+      </div>
+      <div>
+        <div class="link-label">Bibliothek</div>
+        <div class="link-desc">Playlists &amp; Später</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="divider"></div>
+
+  <p class="section-label">Shorts dauerhaft blockieren <span class="badge">Tipp</span></p>
+
+  <div class="info-card">
+    <div class="info-card-title">
+      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+      AdGuard → Benutzerregeln
     </div>
-    <div class="feature-item">
-      <div class="feature-icon fi-blue">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </div>
-      <div class="feature-text">
-        <div class="feature-label">Abonnements zuerst</div>
-        <div class="feature-desc">Subscriptions-Feed als Startseite</div>
-      </div>
-    </div>
-    <div class="feature-item">
-      <div class="feature-icon fi-green">
-        <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      </div>
-      <div class="feature-text">
-        <div class="feature-label">Kein Algorithmus</div>
-        <div class="feature-desc">Empfehlungs-Reihen minimiert</div>
-      </div>
+    <div class="info-card-body">
+      Installiere AdGuard für iOS (kostenlos). Unter <strong>DNS-Schutz → Benutzerregeln</strong> diese Zeile einfügen:
+      <code>youtube.com##ytm-pivot-bar-item-renderer:has([tab-identifier="FEshorts"])</code>
     </div>
   </div>
 
-  <button class="cta-btn" onclick="startApp()">YouTube öffnen</button>
+  <div class="info-card">
+    <div class="info-card-title">
+      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+      Als App installieren
+    </div>
+    <div class="info-card-body">
+      Teilen-Button in Safari → <strong>„Zum Home-Bildschirm"</strong> → YTClean erscheint als App-Icon ohne Browser-Leiste.
+    </div>
+  </div>
+
+  <p class="footer">YTClean · Wilcke Worte &amp; Visionen</p>
 </div>
-
-<!-- Main App -->
-<div id="app" style="display:none;">
-  <div id="topbar">
-    <div class="topbar-left">
-      <button class="icon-btn" onclick="goBack()" title="Zurück">
-        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-      </button>
-      <button class="icon-btn" onclick="goForward()" title="Vor">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-      </button>
-    </div>
-    <div class="topbar-title">YT<span>Clean</span></div>
-    <div class="topbar-right">
-      <button class="icon-btn" onclick="reloadFrame()" title="Neu laden">
-        <svg viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg>
-      </button>
-      <button class="icon-btn" onclick="goHome()" title="Subscriptions">
-        <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      </button>
-    </div>
-  </div>
-
-  <div id="progress-bar"></div>
-
-  <iframe
-    id="yt-frame"
-    src="about:blank"
-    allow="autoplay; fullscreen; picture-in-picture"
-    allowfullscreen
-    sandbox="allow-scripts allow-same-origin allow-forms allow-popups allow-popups-to-escape-sandbox allow-presentation"
-  ></iframe>
-
-  <div id="bottombar">
-    <button class="bottom-btn active" id="btn-subs" onclick="goHome()">
-      <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-      <span>Abos</span>
-    </button>
-    <button class="bottom-btn" id="btn-search" onclick="goSearch()">
-      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <span>Suche</span>
-    </button>
-    <button class="bottom-btn" id="btn-trending" onclick="goTrending()">
-      <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
-      <span>Trending</span>
-    </button>
-    <button class="bottom-btn" id="btn-library" onclick="goLibrary()">
-      <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
-      <span>Bibliothek</span>
-    </button>
-  </div>
-</div>
-
-<div id="toast"></div>
-
-<script>
-  const SUBS_URL      = 'https://www.youtube.com/feed/subscriptions';
-  const SEARCH_URL    = 'https://www.youtube.com/';
-  const TRENDING_URL  = 'https://www.youtube.com/feed/trending';
-  const LIBRARY_URL   = 'https://www.youtube.com/feed/library';
-
-  const frame    = document.getElementById('yt-frame');
-  const progress = document.getElementById('progress-bar');
-  const splash   = document.getElementById('splash');
-  const app      = document.getElementById('app');
-  let   history  = [SUBS_URL];
-  let   histIdx  = 0;
-
-  // ── CSS + JS Injection ──────────────────────────────────────────────
-  const INJECT_CSS = `
-    /* Shorts komplett ausblenden */
-    ytd-rich-shelf-renderer[is-shorts],
-    ytm-shorts-lockup-view-model,
-    ytm-reel-shelf-renderer,
-    [tab-title="Shorts"],
-    [tab-identifier="FEshorts"],
-    a[href*="/shorts/"],
-    ytd-shorts,
-    ytd-reel-video-renderer,
-    ytd-guide-entry-renderer:has(a[href="/shorts"]),
-    ytm-pivot-bar-item-renderer:has([tab-identifier="FEshorts"]) {
-      display: none !important;
-      height: 0 !important;
-      overflow: hidden !important;
-    }
-    /* Empfehlungsreihen dämpfen */
-    ytd-rich-section-renderer { display: none !important; }
-    /* Popups entfernen */
-    tp-yt-paper-dialog,
-    ytd-popup-container,
-    ytd-consent-bump-v2-renderer { display: none !important; }
-  `;
-
-  const INJECT_JS = `
-    (function() {
-      // Shorts-Links im DOM entfernen (MutationObserver)
-      var obs = new MutationObserver(function(mutations) {
-        mutations.forEach(function(m) {
-          m.addedNodes.forEach(function(node) {
-            if (!node.tagName) return;
-            var tag = node.tagName.toLowerCase();
-            if (tag === 'ytd-rich-shelf-renderer' && node.hasAttribute('is-shorts')) { node.remove(); return; }
-            if (['ytm-shorts-lockup-view-model','ytd-reel-video-renderer','ytm-reel-shelf-renderer'].includes(tag)) { node.remove(); return; }
-            if (node.querySelectorAll) {
-              node.querySelectorAll('a[href*="/shorts/"]').forEach(function(a) {
-                var p = a.closest('ytd-rich-item-renderer,ytm-shorts-lockup-view-model');
-                if (p) p.remove();
-              });
-              node.querySelectorAll('video').forEach(function(v) { v.autoplay = false; });
-            }
-          });
-        });
-      });
-      if (document.body) obs.observe(document.body, { childList: true, subtree: true });
-    })();
-  `;
-
-  // ── Navigation ───────────────────────────────────────────────────────
-  function navigate(url) {
-    setActive(null);
-    if (url === SUBS_URL) setActive('btn-subs');
-    else if (url === SEARCH_URL) setActive('btn-search');
-    else if (url === TRENDING_URL) setActive('btn-trending');
-    else if (url === LIBRARY_URL) setActive('btn-library');
-
-    startProgress();
-    // Shorts blockieren
-    if (url.includes('/shorts/')) {
-      showToast('Shorts sind deaktiviert');
-      navigate(SUBS_URL);
-      return;
-    }
-    frame.src = url;
-    history.splice(histIdx + 1);
-    history.push(url);
-    histIdx = history.length - 1;
-  }
-
-  function goHome()     { navigate(SUBS_URL); }
-  function goSearch()   { navigate(SEARCH_URL); }
-  function goTrending() { navigate(TRENDING_URL); }
-  function goLibrary()  { navigate(LIBRARY_URL); }
-
-  function goBack() {
-    if (histIdx > 0) { histIdx--; frame.src = history[histIdx]; startProgress(); }
-  }
-  function goForward() {
-    if (histIdx < history.length - 1) { histIdx++; frame.src = history[histIdx]; startProgress(); }
-  }
-  function reloadFrame() { frame.src = frame.src; startProgress(); }
-
-  function setActive(id) {
-    ['btn-subs','btn-search','btn-trending','btn-library'].forEach(function(b) {
-      document.getElementById(b).classList.remove('active');
-    });
-    if (id) document.getElementById(id).classList.add('active');
-  }
-
-  // ── Progress Bar ─────────────────────────────────────────────────────
-  function startProgress() {
-    progress.classList.add('loading');
-    progress.style.width = '0%';
-    setTimeout(function() { progress.style.width = '60%'; }, 80);
-    setTimeout(function() { progress.style.width = '85%'; }, 400);
-  }
-  function endProgress() {
-    progress.style.width = '100%';
-    setTimeout(function() { progress.classList.remove('loading'); progress.style.width = '0%'; }, 400);
-  }
-
-  frame.addEventListener('load', function() {
-    endProgress();
-    // CSS + JS nach Frame-Load injizieren
-    try {
-      var doc = frame.contentDocument || frame.contentWindow.document;
-      var style = doc.createElement('style');
-      style.textContent = INJECT_CSS;
-      doc.head.appendChild(style);
-      var script = doc.createElement('script');
-      script.textContent = INJECT_JS;
-      doc.head.appendChild(script);
-    } catch(e) {
-      // Cross-Origin blockiert CSS/JS-Injection in iframe
-      // Das ist die Einschränkung der PWA vs. native WKWebView
-    }
-  });
-
-  // ── Toast ────────────────────────────────────────────────────────────
-  function showToast(msg) {
-    var t = document.getElementById('toast');
-    t.textContent = msg;
-    t.classList.add('show');
-    setTimeout(function() { t.classList.remove('show'); }, 2500);
-  }
-
-  // ── Splash ───────────────────────────────────────────────────────────
-  function startApp() {
-    splash.classList.add('hidden');
-    app.style.display = 'flex';
-    navigate(SUBS_URL);
-  }
-
-  // Beim ersten Start Splash zeigen, danach direkt laden
-  if (sessionStorage.getItem('ytclean_started')) {
-    startApp();
-  }
-</script>
-
 </body>
 </html>
