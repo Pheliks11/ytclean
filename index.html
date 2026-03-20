@@ -34,14 +34,12 @@
     }
     .page {
       min-height: 100dvh;
-      display: flex;
-      flex-direction: column;
+      display: flex; flex-direction: column;
       padding: calc(var(--safe-t) + 48px) 24px calc(var(--safe-b) + 32px);
       align-items: center;
     }
     .app-icon {
-      width: 100px; height: 100px;
-      border-radius: 26px;
+      width: 100px; height: 100px; border-radius: 26px;
       background: linear-gradient(145deg, #1c1c1c, #242424);
       border: 1px solid var(--border-h);
       display: flex; align-items: center; justify-content: center;
@@ -67,7 +65,6 @@
       align-self: flex-start; margin-bottom: 10px;
       padding-left: 4px; width: 100%; max-width: 360px;
     }
-    .link-card, .cta-primary { -webkit-appearance: none; appearance: none; }
     .cta-primary {
       width: 100%; max-width: 360px;
       padding: 17px; border-radius: var(--radius);
@@ -77,9 +74,10 @@
       transition: transform 0.15s var(--ease);
       box-shadow: 0 4px 28px var(--accent-g);
       -webkit-tap-highlight-color: transparent;
-      margin-bottom: 16px; text-decoration: none;
+      margin-bottom: 16px;
       display: flex; align-items: center;
       justify-content: center; gap: 8px;
+      -webkit-appearance: none;
     }
     .cta-primary:active { transform: scale(0.96); }
     .cta-primary svg { width: 18px; height: 18px; stroke: #fff; fill: none; stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
@@ -95,52 +93,26 @@
       background: var(--card);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      text-decoration: none; color: var(--text);
+      color: var(--text); cursor: pointer;
       transition: transform 0.15s var(--ease), background 0.2s;
       -webkit-tap-highlight-color: transparent;
-      cursor: pointer;
+      -webkit-appearance: none;
+      border: 1px solid var(--border);
+      text-align: left; width: 100%;
     }
-    .link-card:active { transform: scale(0.95); background: var(--elevated); }
+    .link-card:active { transform: scale(0.97); background: var(--elevated); }
     .link-icon {
       width: 40px; height: 40px; border-radius: 12px;
       display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
     .link-icon svg { width: 20px; height: 20px; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
     .li-red   { background: rgba(255,59,48,0.15);  color: #ff3b30; }
-    .li-blue  { background: rgba(10,132,255,0.15); color: #0a84ff; }
     .li-green { background: rgba(52,199,89,0.15);  color: #34c759; }
-    .li-yell  { background: rgba(255,214,10,0.15); color: #ffd60a; }
-    .link-label { font-size: 14px; font-weight: 600; }
-    .link-desc  { font-size: 12px; color: var(--text-2); margin-top: -4px; }
-    .divider { width: 100%; max-width: 360px; height: 1px; background: var(--border); margin: 20px 0; }
-    .info-card {
-      width: 100%; max-width: 360px;
-      background: var(--card); border: 1px solid var(--border);
-      border-radius: var(--radius); padding: 16px; margin-bottom: 12px;
-    }
-    .info-card-title {
-      font-size: 13px; font-weight: 600; color: var(--text);
-      margin-bottom: 8px; display: flex; align-items: center; gap: 8px;
-    }
-    .info-card-title svg { width: 14px; height: 14px; stroke: var(--text-2); fill: none; stroke-width: 2; stroke-linecap: round; }
-    .info-card-body { font-size: 13px; color: var(--text-2); line-height: 1.6; }
-
-    /* Hinweis-Banner oben */
-    .notice {
-      width: 100%; max-width: 360px;
-      background: rgba(10,132,255,0.12);
-      border: 1px solid rgba(10,132,255,0.25);
-      border-radius: var(--radius);
-      padding: 14px 16px;
-      margin-bottom: 24px;
-      font-size: 13px;
-      color: #6bc5ff;
-      line-height: 1.5;
-      display: flex; gap: 10px; align-items: flex-start;
-    }
-    .notice svg { width: 16px; height: 16px; stroke: #6bc5ff; fill: none; stroke-width: 2; stroke-linecap: round; flex-shrink: 0; margin-top: 1px; }
-
-    .footer { margin-top: 32px; font-size: 12px; color: var(--text-2); text-align: center; opacity: 0.4; }
+    .link-text { display: flex; flex-direction: column; gap: 2px; }
+    .link-label { font-size: 14px; font-weight: 600; color: var(--text); }
+    .link-desc  { font-size: 12px; color: var(--text-2); }
+    .footer { margin-top: auto; padding-top: 40px; font-size: 12px; color: var(--text-2); text-align: center; opacity: 0.4; }
   </style>
 </head>
 <body>
@@ -158,55 +130,48 @@
   <h1>YT<span>Clean</span></h1>
   <p class="subtitle">YouTube direkt zu deinen Abonnements — ohne Shorts, ohne Algorithmus.</p>
 
-  <!-- Hinweis: AdGuard nur in Safari aktiv -->
-  <div class="notice">
-    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-    <span>Die Buttons öffnen YouTube in <strong style="color:#a8d8ff">Safari</strong> — nur dort sind die AdGuard-Regeln aktiv und Shorts verschwinden.</span>
-  </div>
-
-  <!-- Hauptbutton: öffnet Safari mit target="_blank" -->
-  <button class="cta-primary" onclick="window.location.href='https://www.youtube.com/feed/subscriptions'">
+  <button class="cta-primary" onclick="openSafari('https://www.youtube.com/feed/subscriptions')">
     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
     Abonnements öffnen
   </button>
 
   <p class="section-label">Schnellzugriff</p>
   <div class="links-grid">
-
-
-    <button class="link-card" onclick="window.location.href='https://www.youtube.com/feed/history'">
+    <button class="link-card" onclick="openSafari('https://www.youtube.com/feed/history')">
       <div class="link-icon li-green">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
-      <div>
+      <div class="link-text">
         <div class="link-label">Verlauf</div>
         <div class="link-desc">Zuletzt gesehen</div>
       </div>
     </button>
-    <button class="link-card" onclick="window.location.href='https://www.youtube.com/feed/library'">
+    <button class="link-card" onclick="openSafari('https://www.youtube.com/feed/library')">
       <div class="link-icon li-red">
         <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       </div>
-      <div>
+      <div class="link-text">
         <div class="link-label">Bibliothek</div>
         <div class="link-desc">Playlists &amp; Später</div>
       </div>
     </button>
   </div>
 
-  <div class="divider"></div>
-
-  <div class="info-card">
-    <div class="info-card-title">
-      <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      Wie es funktioniert
-    </div>
-    <div class="info-card-body">
-      YTClean öffnet YouTube direkt in Safari — dort greifen deine AdGuard-Regeln und blenden Shorts automatisch aus. Der Shorts-Tab und Kurzvideos verschwinden komplett.
-    </div>
-  </div>
-
   <p class="footer">YTClean · Wilcke Worte &amp; Visionen</p>
 </div>
+
+<script>
+  function openSafari(url) {
+    // Einzige Methode die im iOS PWA-Modus Safari erzwingt:
+    // Dynamisch erzeugter <a> mit target="_blank" + simulierter Klick
+    var a = document.createElement('a');
+    a.href = url;
+    a.target = '_blank';
+    a.rel = 'noopener';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  }
+</script>
 </body>
 </html>
