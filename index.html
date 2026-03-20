@@ -51,10 +51,8 @@
     .app-icon svg { width: 52px; height: 52px; }
     h1 {
       font-size: clamp(2.2rem, 9vw, 3rem);
-      font-weight: 700;
-      letter-spacing: -0.04em;
-      margin-bottom: 10px;
-      text-align: center;
+      font-weight: 700; letter-spacing: -0.04em;
+      margin-bottom: 10px; text-align: center;
     }
     h1 span { color: var(--accent); }
     .subtitle {
@@ -66,9 +64,8 @@
       font-size: 11px; font-weight: 600;
       letter-spacing: 0.08em; color: var(--text-2);
       text-transform: uppercase;
-      align-self: flex-start;
-      margin-bottom: 10px; padding-left: 4px;
-      width: 100%; max-width: 360px;
+      align-self: flex-start; margin-bottom: 10px;
+      padding-left: 4px; width: 100%; max-width: 360px;
     }
     .cta-primary {
       width: 100%; max-width: 360px;
@@ -100,6 +97,7 @@
       text-decoration: none; color: var(--text);
       transition: transform 0.15s var(--ease), background 0.2s;
       -webkit-tap-highlight-color: transparent;
+      cursor: pointer;
     }
     .link-card:active { transform: scale(0.95); background: var(--elevated); }
     .link-icon {
@@ -125,18 +123,22 @@
     }
     .info-card-title svg { width: 14px; height: 14px; stroke: var(--text-2); fill: none; stroke-width: 2; stroke-linecap: round; }
     .info-card-body { font-size: 13px; color: var(--text-2); line-height: 1.6; }
-    .info-card-body code {
-      font-family: 'SF Mono', monospace; font-size: 11px;
-      background: var(--elevated); padding: 6px 10px;
-      border-radius: 8px; color: #0a84ff;
-      display: block; margin-top: 8px; word-break: break-all;
+
+    /* Hinweis-Banner oben */
+    .notice {
+      width: 100%; max-width: 360px;
+      background: rgba(10,132,255,0.12);
+      border: 1px solid rgba(10,132,255,0.25);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      margin-bottom: 24px;
+      font-size: 13px;
+      color: #6bc5ff;
+      line-height: 1.5;
+      display: flex; gap: 10px; align-items: flex-start;
     }
-    .badge {
-      font-size: 10px; font-weight: 700;
-      letter-spacing: 0.05em; text-transform: uppercase;
-      background: rgba(255,214,10,0.15); color: #ffd60a;
-      border-radius: 6px; padding: 2px 7px;
-    }
+    .notice svg { width: 16px; height: 16px; stroke: #6bc5ff; fill: none; stroke-width: 2; stroke-linecap: round; flex-shrink: 0; margin-top: 1px; }
+
     .footer { margin-top: 32px; font-size: 12px; color: var(--text-2); text-align: center; opacity: 0.4; }
   </style>
 </head>
@@ -155,14 +157,21 @@
   <h1>YT<span>Clean</span></h1>
   <p class="subtitle">YouTube direkt zu deinen Abonnements — ohne Shorts, ohne Algorithmus.</p>
 
-  <a class="cta-primary" href="https://www.youtube.com/feed/subscriptions">
+  <!-- Hinweis: AdGuard nur in Safari aktiv -->
+  <div class="notice">
+    <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+    <span>Die Buttons öffnen YouTube in <strong style="color:#a8d8ff">Safari</strong> — nur dort sind die AdGuard-Regeln aktiv und Shorts verschwinden.</span>
+  </div>
+
+  <!-- Hauptbutton: öffnet Safari mit target="_blank" -->
+  <a class="cta-primary" href="https://www.youtube.com/feed/subscriptions" target="_blank" rel="noopener">
     <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
     Abonnements öffnen
   </a>
 
   <p class="section-label">Schnellzugriff</p>
   <div class="links-grid">
-    <a class="link-card" href="https://www.youtube.com/feed/subscriptions">
+    <a class="link-card" href="https://www.youtube.com/feed/subscriptions" target="_blank" rel="noopener">
       <div class="link-icon li-blue">
         <svg viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
       </div>
@@ -171,7 +180,7 @@
         <div class="link-desc">Dein Haupt-Feed</div>
       </div>
     </a>
-    <a class="link-card" href="https://www.youtube.com/feed/trending">
+    <a class="link-card" href="https://www.youtube.com/feed/trending" target="_blank" rel="noopener">
       <div class="link-icon li-yell">
         <svg viewBox="0 0 24 24"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
       </div>
@@ -180,7 +189,7 @@
         <div class="link-desc">Aktuelle Videos</div>
       </div>
     </a>
-    <a class="link-card" href="https://www.youtube.com/feed/history">
+    <a class="link-card" href="https://www.youtube.com/feed/history" target="_blank" rel="noopener">
       <div class="link-icon li-green">
         <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
       </div>
@@ -189,7 +198,7 @@
         <div class="link-desc">Zuletzt gesehen</div>
       </div>
     </a>
-    <a class="link-card" href="https://www.youtube.com/feed/library">
+    <a class="link-card" href="https://www.youtube.com/feed/library" target="_blank" rel="noopener">
       <div class="link-icon li-red">
         <svg viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></svg>
       </div>
@@ -202,26 +211,13 @@
 
   <div class="divider"></div>
 
-  <p class="section-label">Shorts dauerhaft blockieren <span class="badge">Tipp</span></p>
-
   <div class="info-card">
     <div class="info-card-title">
       <svg viewBox="0 0 24 24"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
-      AdGuard → Benutzerregeln
+      Wie es funktioniert
     </div>
     <div class="info-card-body">
-      Installiere AdGuard für iOS (kostenlos). Unter <strong>DNS-Schutz → Benutzerregeln</strong> diese Zeile einfügen:
-      <code>youtube.com##ytm-pivot-bar-item-renderer:has([tab-identifier="FEshorts"])</code>
-    </div>
-  </div>
-
-  <div class="info-card">
-    <div class="info-card-title">
-      <svg viewBox="0 0 24 24"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      Als App installieren
-    </div>
-    <div class="info-card-body">
-      Teilen-Button in Safari → <strong>„Zum Home-Bildschirm"</strong> → YTClean erscheint als App-Icon ohne Browser-Leiste.
+      YTClean öffnet YouTube direkt in Safari — dort greifen deine AdGuard-Regeln und blenden Shorts automatisch aus. Der Shorts-Tab und Kurzvideos verschwinden komplett.
     </div>
   </div>
 
